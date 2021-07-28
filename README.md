@@ -1,3 +1,4 @@
 # docker-spark
-Docker environment with Spache Spark, Hive, Hue and HDFS
-building a docker container image with hive
+
+Get your big data environment and minimal resources to get hands-on experience with this Hadoop cluster using different containers: Apache Spark,  Hive, HDFS, Hue
+
