@@ -7,3 +7,5 @@ Get your big data environment and minimal resources to get hands-on experience w
 git
 
 Architecture
+
+still workin on it
