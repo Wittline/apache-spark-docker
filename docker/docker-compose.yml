@@ -1,0 +1,199 @@
+version: "3.6"
+services:
+  jupyterlab:
+    image: wittline/jupyterlab:3.0.0-spark-3.0.0
+    container_name: jupyterlab
+    ports:
+      - 8889:8889
+      - 4040:4040
+    volumes:
+      - ./workspace:/opt/workspace
+  spark-master:
+    image: wittline/spark-master:3.0.0
+    container_name: spark-master
+    ports:
+      - 8080:8080
+      - 7077:7077
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    depends_on:
+      - hive-server
+    volumes:
+      - ./workspace:/opt/workspace
+      - ./base/spark_conf/hadoop:/etc/hadoop/conf/
+      - ./base/spark_conf/hive/hive-site.xml:/usr/bin/spark-3.0.0-bin-hadoop3.2/conf/hive-site.xml
+  spark-worker-1:
+    image: wittline/spark-worker:3.0.0
+    container_name: spark-worker-1
+    depends_on:
+      - spark-master    
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077      
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1024m      
+    ports:
+      - 8081:8081
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    volumes:
+      - ./workspace:/opt/workspace
+      - ./base/spark_conf/hadoop:/etc/hadoop/conf/
+      - ./base/spark_conf/hive/hive-site.xml:/usr/bin/spark-3.0.0-bin-hadoop3.2/conf/hive-site.xml
+  spark-worker-2:
+    image: wittline/spark-worker:3.0.0
+    container_name: spark-worker-2
+    depends_on:
+      - spark-master     
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077      
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1024m  
+    ports:
+      - 8082:8081
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    volumes:
+      - ./workspace:/opt/workspace
+      - ./base/spark_conf/hadoop:/etc/hadoop/conf/
+      - ./base/spark_conf/hive/hive-site.xml:/usr/bin/spark-3.0.0-bin-hadoop3.2/conf/hive-site.xml
+  
+  namenode:
+    image: fjardim/namenode_sqoop
+    container_name: namenode
+    hostname: namenode
+    volumes:
+      - ./base/hdfs/namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    ports:
+      - "50070:50070"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+  datanode1:
+    image: fjardim/datanode
+    container_name: datanode1
+    hostname: datanode1
+    volumes:
+      - ./base/hdfs/datanode1:/hadoop/dfs/data
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    depends_on:
+      - namenode
+    ports:
+      - "50075:50075"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+  datanode2:
+    image: fjardim/datanode
+    container_name: datanode2
+    hostname: datanode2
+    volumes:
+      - ./base/hdfs/datanode2:/hadoop/dfs/data
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    depends_on:
+      - namenode
+    ports:
+      - "50080:50075"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+  
+  hive-server:
+    image: fjardim/hive
+    container_name: hive-server
+    hostname: hive_server
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    environment:
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+    depends_on:
+      - hive-metastore
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+  
+  hive-metastore:
+    image: fjardim/hive
+    container_name: hive_metastore
+    hostname: hive_metastore
+    env_file:
+      - ./base/hadoop/hadoop-hive.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070 datanode1:50075 hive-metastore-postgresql:5432"
+    ports:
+      - "9083:9083"
+    depends_on:
+      - hive-metastore-postgresql
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+  
+  hive-metastore-postgresql:
+    image: fjardim/hive-metastore
+    container_name: hive-metastore-postgresql
+    hostname: hive_metastore_postgresql
+    volumes:
+      - ./base/postgresql:/var/lib/postgresql/data
+    depends_on:
+      - datanode1
+      - datanode2
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+  hue:
+    image: fjardim/hue
+    hostname: hue
+    container_name: hue
+    ports:
+    - "8888:8888"
+    volumes:
+      - ./base/hue/hue-overrides.ini:/usr/share/hue/desktop/conf/z-hue.ini
+    depends_on:
+      - "database"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+  
+  database:
+    image: fjardim/mysql
+    container_name: database
+    hostname: database
+    ports:
+        - "33061:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    command: mysqld --innodb-flush-method=O_DSYNC --innodb-use-native-aio=OFF --init-file /data/application/init.sql
+    volumes:
+        - ./base/mysql/data:/var/lib/mysql
+        - ./base/mysql/init.sql:/data/application/init.sql
+    environment:
+        MYSQL_ROOT_USER: root
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: hue
+        MYSQL_USER: root
+        MYSQL_PASSWORD: secret
