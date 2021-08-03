@@ -13,4 +13,8 @@ Standalone cluster manager
 
 # Docker containers architecture
 
+
+![architecture](https://user-images.githubusercontent.com/8701464/127952650-c71d6374-3cb0-40fc-8df5-01ffda530081.png)
+
+
 still workin on it
