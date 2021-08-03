@@ -1,6 +1,6 @@
 # Containerization of an Apache Spark Standalone Cluster on Docker
 
-El objetivo de este repositorio es mostrar el uso de docker como una herramienta poderosa para desplegar aplicaciones que se comunican entre ellas de una manera rapida y estable, en este caso te presento un pequeño ecosistema de big data para procesamiento en memoria, el ecosistema esta basado en diferentes contenedores de docker, se tomo en consideracion agregar Hive y Hue como aplicaciones necesarias en un ecosistema simple de big data con apache spark, este proyecto te ayudarà a ir directamente a escribir codigo de apache spark y obtener experiencia practica y no preocuparte por la instalacion e implementacion de la infraestrcutura, a continuacion se detallan las aplicaciones instaladas y el porque de cada una:
+The aim of this article is to show the use of docker as a powerful tool to deploy applications that communicate with each other in a fast and stable way, in this case I present a small ecosystem of big data for in-memory processing, the ecosystem is based in different docker containers, it was considered to add Apache Hive and Hue as needed applications in a simple big data ecosystem with Apache Spark, this project will help you go directly to writing scala or pyspark code and get hands-on experience and not worry about the installation and implementation of the infrastructure, the installed applications and the reason for each one them are detailed below.
 
 - Apache Spark
 - Hive
