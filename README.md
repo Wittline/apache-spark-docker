@@ -82,3 +82,13 @@ $ winpty docker-compose up -d
 - Now go to jupyterlab, using the url: http://localhost:8889/, this will open a new tab, enjoy writing your pyspark code.
 - Go to Hue using the url: http://localhost:8888/, and check your tables in HDFS
 
+## Contributing and Feedback
+Any ideas or feedback about this repository?. Help me to improve it.
+
+## Authors
+- Created by <a href="https://www.linkedin.com/in/ramsescoraspe"><strong>Ramses Alexander Coraspe Valdez</strong></a>
+- Created on August, 2021
+
+## License
+This project is licensed under the terms of the Apache License.
+
