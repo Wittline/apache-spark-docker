@@ -16,7 +16,7 @@ checking the docker-compose.yml file you can see the detailed docker images for 
 - spark-master (wittline/spark-master:3.0.0)
 - spark-worker-1 (wittline/spark-worker:3.0.0)
 - spark-worker-2 (wittline/spark-worker:3.0.0)
-- 
+ 
 you can check the details about the docker image here: wittline
 
 ### What is a standalone cluster?
