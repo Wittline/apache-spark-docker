@@ -17,7 +17,7 @@ checking the docker-compose.yml file you can see the detailed docker images for 
 - spark-worker-1 (wittline/spark-worker:3.0.0)
 - spark-worker-2 (wittline/spark-worker:3.0.0)
  
-you can check the details about the docker image here: <a  href="https://hub.docker.com/u/wittline"wittline</a>
+you can check the details about the docker image here: <a  href="https://hub.docker.com/u/wittline"> wittline</a>
 
 ### What is a standalone cluster?
 There are different ways to run an Apache Spark application: Local Mode, Standalone mode, Yarn, Kubernetes and Mesos, these are the way how Apache spark assigns resources to its drivers and executors, the last three mentioned are cluster managers, everything is based on who is the master node, let's see the table below:
@@ -32,7 +32,7 @@ checking the docker-compose.yml file you can see the detailed docker images for 
 
 - jupyterlab (wittline/jupyterlab:3.0.0-spark-3.0.0)
 
-you can check the details about the docker image here: <a  href="https://hub.docker.com/u/wittline"wittline</a>
+you can check the details about the docker image here: <a  href="https://hub.docker.com/u/wittline"> wittline</a>
 
 ## Hive
 Apache Spark manages all the complexities of create and manage global and session-scoped views and SQL managed and unmanaged tables, in memory and disk, and SparkSQL is one the main components of Apache Spark, integrating relational procesing with spark functional programming. Apache Spark by default uses the Apache Hive metastore, located at user/hive/warehouse, to persist all the metadata about the tables created. Apache Spark does not need Hive, the idea of adding hive to this architecture is to have a metadata storage about tables and views that can be reused in a workload and thus avoid the use of re-creating queries for these tables. For example: A global temporary view is visible accross multiple SparkSessions, in this case we can conbine data from different SparkSessions that do not share the same hive metastore. Hive data warehouse facilitates reading, writing, and managing large datasets on HDFS storage using SQL
@@ -41,7 +41,7 @@ Apache Spark manages all the complexities of create and manage global and sessio
 - hive-metastore (wittline/fjardim/hive)
 - hive-metastore-postgresql (wittline/spark-worker:3.0.0)
 
-you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim"fjardim</a>
+you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim">fjardim</a>
 
 
 ## Namenode and datanodes (HDFS)
@@ -51,7 +51,7 @@ The Namenode is the master node which persist metadata in HDFS and the datanode 
 - datanode1 (fjardim/datanode)
 - datanode2 (fjardim/datanode)
 
-you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim"fjardim</a>
+you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim">fjardim</a>
 
 ## Hue
 
@@ -60,7 +60,7 @@ Hue is an open source SQL Assistant for Databases & Data Warehouses, It is not n
 - namenode (fjardim/hue)
 - database(fjardim/mysql)
 
-you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim"fjardim</a>
+you can check the details about the docker image here: <a href="https://hub.docker.com/u/fjardim">fjardim</a>
 
 ## How to run the docker environment
 - Install Docker Desktop on Windows, it will install Docker Compose as well, Docker Compose will allow you to run multiple container applications
